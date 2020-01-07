@@ -55,42 +55,8 @@ class Phrase {
             this.list.push(space);
             $('#phrase ul').append(space);
           }
-          console.log(this.list);
+          
 
   }
 }
-  //   //-----------------------------------------------------------------------------------------------
-  //   get phraseArr(){
-  //     let phraseArr = [];
-  //     for(let i =0;i<this.phrase.length;i++){
-  //       const letter = this.phrase[i];
-  //       phraseArr.push(letter.toLowerCase());
-  //     }
-  //     return phraseArr;
-  //   }
-
-   
-  //   //creates li element for DOM
-  //   createList(){
-  //     for(const letter of this.phraseArr){
-  //       const space = document.createElement('li');
-  //       space.textContent = letter;
-  //       if(space.textContent===' '){
-  //         space.className = 'space';
-  //       }else if ((/[a-z]/i).test(space.textContent)){
-  //         space.className = 'letter';
-  //       } else {
-  //         space.className = 'show'
-  //       }
-  //       this.list.push(space);
-  //     }
-  //   }
-   
-  //   //appends each li to the DOM
-  //   addPhraseToDisplay(){
-  //     for(const letter of this.list){
-  //       $('#phrase ul').append(letter);
-  //     }
-     
-  //   }
-  // 
+ 

@@ -4,36 +4,53 @@
 class Game {
     constructor(){
         this.phrases = [
-            'Monkey see monkey do!',
-            'You win some, you lose some.',
-            'Tomorrow is a new day.',
-            'A dime a dozen.',
-            'A piece of cake.',
-            'Stop beating around the bush.',
-            "You're barking up the wrong tree."
+            new Phrase('Monkey see monkey do!'),
+            new Phrase('You win some, you lose some.'),
+            new Phrase('Tomorrow is a new day.'),
+            new Phrase('A dime a dozen.'),
+            new Phrase('A piece of cake.'),
+            new Phrase('Stop beating around the bush.'),
+            new Phrase("You're barking up the wrong tree.")
           ];
         this.activePhrase;
         this.hearts = $('#scoreboard ol li img');
         this.missed = 0;
+        this.gameReady = false;
+        this.guessedLetters = [];
     }
            
     //randomly selects a phrase from this.phrases
-    get randomPhrase(){
+    getrandomPhrase(){
         return this.phrases[Math.floor(Math.random()*this.phrases.length)];
     }
 
     startGame(){
         //Hides start screen overlay
         $('#overlay').hide();
+
+        this.gameReady = true;
         //sets active phrase property
-        this.activePhrase = new Phrase(this.randomPhrase);
+        this.activePhrase = this.getrandomPhrase();
         //calls addphrase to display
         this.activePhrase.addPhraseToDisplay();
         $('body').css('background','rgb(2, 59, 2)');
     }
-
+    guessed(letter){
+        let matched = false;
+        this.guessedLetters.forEach(function(guessed){
+         
+            if(guessed===letter){
+                matched = true;
+            }
+            
+        });
+        return matched;
+    }
+    
+    //handles all keypresses and button clicks of keyboard
     handleInteraction(event){
-        const button = $('.key');
+        
+        const button = $('#qwerty button');
         let selected;
         for(let i =0; i<button.length;i++){
             //disables button if clicked or if correlating key is pressed on keyboard
@@ -44,6 +61,7 @@ class Game {
         }
         //disables selected button
         if(event.target.tagName==='BUTTON'){
+            this.guessedLetters.push(event.target.textContent);
              if(this.activePhrase.checkLetter(event.target.textContent)===false){
                 //adds wrong class to selected button
                 event.target.className = 'wrong';
@@ -55,7 +73,7 @@ class Game {
                  this.checkForWin();
              }               
         } else if (event.type==='keydown'){
-            
+            this.guessedLetters.push(event.key);
             if(!this.activePhrase.checkLetter(event.key, this.activePhrase.list)){
                 //adds wrong class to selected letter button
                 selected.className = 'wrong';
@@ -82,7 +100,7 @@ class Game {
             //if 0 hearts left
                 //gameOver()
                 const lostHeart = this.hearts[this.missed];
-                console.log(lostHeart);
+               
                 lostHeart.src = "images/lostHeart.png";
                 this.missed++;
                 if(this.missed===5){
@@ -114,48 +132,8 @@ class Game {
         for(const heart of this.hearts){
             heart.src = "images/liveHeart.png";
         }
+        //resets guessed letters
+        this.GuessedLetters = [];
     }
 
 }
-//     //------------------------------------------------------------------------------------------
-//     resetGame(){
-//         this.phrase.createList();
-//         this.phrase.addPhraseToDisplay();
-//         this.score = 5;
-//     }
-//     loseHeart(){
-        
-//     }
-//     updateGame(){
-
-//     }
-//     //handles on screen letters
-//     handleBtnLetter(letterGuessed){
-//         if(this.gameOver===false){
-//             for(const letter of this.phrase.list){
-//                 console.log(letter);
-//                 const currentLetter = letter.textContent.toLowerCase();
-//                 if(currentLetter===letterGuessed){
-//                     letter.className = 'show';
-//                 }
-//             }
-//         }
-//     }
-//     //handles all guesses made from keyboard
-//     handleKeydown(letterGuessed){
-//         if(this.gameOver===false){
-//             let matched = false;
-//             for(const letter of this.phrase.list){
-               
-//                 const currentLetter = letter.textContent.toLowerCase();
-//                 if(currentLetter===letterGuessed){
-//                     letter.className = 'show';
-//                     matched = true;
-//                 }
-//             }
-//             if(!matched){
-//                 this.loseHeart();
-//             }
-//         }
-//     }
-// }
